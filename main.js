@@ -8,22 +8,29 @@ console.log('Sample JavaScript #3 HW #15');
  * если число передано в функцию – счет начинается с указанного числа
  * если нет – то счет продолжается
  */
+var counter = (function() {
+  var count = 0;
+  return function(n) {
+    count = n !== undefined ? n : count;
+return count++;
+  }
+}());
 
-// console.log(counter()); // 0
+console.log(counter()); // 0
 
-// console.log(counter()); // 1
+console.log(counter()); // 1
 
-// console.log(counter(100)); // 100
+console.log(counter(100)); // 100
 
-// console.log(counter()); // 101
+console.log(counter()); // 101
 
-// console.log(counter(500)); // 500
+console.log(counter(500)); // 500
 
-// console.log(counter()); // 501
+console.log(counter()); // 501
 
-// console.log(counter(0)); // 0
+console.log(counter(0)); // 0
 
-// console.log(counter()); // 1
+console.log(counter()); // 1
 
 /*
  * #2
@@ -35,34 +42,49 @@ console.log('Sample JavaScript #3 HW #15');
  * counting.increment() – увеличивает значение счетчика на 1
  * counting.decrement() – уменьшает значение счетчика на 1
  */
+var counting = (function() {
+  var count = 0;
+  return {
+value(n) {
+  if (n !== undefined) count = n;
+  return count;
+  },
+increment() {
+  count++;
+},
+decrement() {
+  count--;
+}
+};
+  }());
 
-// console.log(counting.value()); // 0
+console.log(counting.value()); // 0
 
-// counting.increment();
+counting.increment();
 
-// counting.increment();
+counting.increment();
 
-// counting.increment();
+counting.increment();
 
-// console.log(counting.value()); // 3
+console.log(counting.value()); // 3
 
-// counting.decrement();
+counting.decrement();
 
-// counting.decrement();
+counting.decrement();
 
-// console.log(counting.value()); // 1
+console.log(counting.value()); // 1
 
-// console.log(counting.value(100)); // 100
+console.log(counting.value(100)); // 100
 
-// counting.decrement();
+counting.decrement();
 
-// console.log(counting.value()); // 99
+console.log(counting.value()); // 99
 
-// console.log(counting.value(200)); // 200
+console.log(counting.value(200)); // 200
 
-// counting.increment();
+counting.increment();
 
-// console.log(counting.value()); // 201
+console.log(counting.value()); // 201
 
 /*
  * #3
@@ -75,10 +97,21 @@ console.log('Sample JavaScript #3 HW #15');
  * console.log(myPow(3, 4, myPrint)); // 3^4=81
  * console.log(myPow(2, 3, myPrint)); // 2^3=8
  */
+var myPrint = (a, b, res) => `${a}^${b}=${res}`;
+var myPow = (a, b, callback) => {
+  var pow = (x,n) => {
+	if (n != 1) {
+	  return x *= pow(x,n - 1);
+	} else {
+	  return x;
+	}
+};
+  return callback (a,b, pow(a,b));
+}
 
-//  console.log(myPow(3, 4, myPrint)); // 3^4=81
+console.log(myPow(3, 4, myPrint)); // 3^4=81
 
-// console.log(myPow(2, 3, myPrint)); // 2^3=8
+console.log(myPow(2, 3, myPrint)); // 2^3=8
 
 /*
  * #4
@@ -90,16 +123,51 @@ console.log('Sample JavaScript #3 HW #15');
  * car.name – бренд авто, строка
  * car.year – год выпуска, число
  * car.used – строка для описания состояния авто, допускаются значения 'used' и 'new'
- *
- * #5
+ */
+ let car = {
+  name: 'Toyota',
+  engine: 2000,
+  model: 'Prius',
+  year: 2008,
+  used: 'used',
+  info
+ };
+
+ let car1 = {
+  name: 'Kia',
+  engine: 1600,
+  model: 'Niro',
+  year: 2018,
+  used: 'used',
+  info
+ };
+
+ let car2 = {
+  name: 'Audi',
+  engine: 3000,
+  model: 'S5 coupe',
+  year: 2023,
+  used: 'new',
+  info
+ };
+
+ /* #5
  *
  * Для созданных ранее объектов определите метод info(), используя ключевое слово this.
  * данный метод должен формировать и возвращать строку с полной информацией об автомобиле, например:
  * Chevrolet Lacetti, 2000cc, year 2010, used
  * Infinite FX50 AWD, 5000cc, year 2019, new
  * пробелы, запятые, символы cc и текст – имеют значение и проверяются при тестировании кода
- *
- * #6
+ */
+function info(name, engine, model, year, used) {
+
+  return this.name + " " + this.model + ", " + this.engine + "cc" + ", " + "year " + this.year + ", " + this.used;
+}
+console.log(car.info());
+console.log(car1.info());
+console.log(car2.info());
+
+/* #6
  *
  * Для созданных ранее объектов измените свойство used, используя аксессоры (геттер и сеттер).
  * - используйте текущий год либо непосредственно в своем коде, либо с помощью глобальной переменной, например, yearNow
